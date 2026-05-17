@@ -1,65 +1,81 @@
-import Image from "next/image";
+'use client';
+
+import { useRef } from 'react';
+import LenisSmoothScroll from '@/components/LenisSmoothScroll';
+import Hero from '@/components/Hero';
+import VideoBackground from '@/components/VideoBackground';
+import FeatureSection from '@/components/FeatureSection';
+import Marquee from '@/components/Marquee';
+import StatsBar from '@/components/StatsBar';
+import PreOrderForm from '@/components/PreOrderForm';
+import Footer from '@/components/Footer';
 
 export default function Home() {
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <LenisSmoothScroll>
+      <main className="relative bg-[#121212] text-white overflow-x-hidden">
+
+        {/* Fixed video background — scrubs against scrollContainerRef */}
+        <VideoBackground containerRef={scrollContainerRef} />
+
+        {/* Everything in this div drives the video scrub (excludes footer) */}
+        <div ref={scrollContainerRef} className="relative z-10">
+
+          {/* 01 · Hero */}
+          <Hero />
+          
+          {/* 03 · Sound Quality — slide left */}
+          <FeatureSection
+            label="001 / Sound"
+            heading={"Pure Sound.\nEvery Frequency."}
+            body="40mm titanium drivers engineered for audiophile-grade clarity. From bone-shaking bass to crystalline highs — Mziqee Buds render music the way artists intended it."
+            align="left"
+            animation="slide-left"
+            accent="#39FF14"
+          />
+
+          {/* 04 · Marquee */}
+          <Marquee text="Feel the Rhythm" speed={-20} />
+
+          {/* 05 · Comfort — slide right */}
+          <FeatureSection
+            label="002 / Comfort"
+            heading={"Wear All Day.\nForget They're There."}
+            body="Memory-foam ear cushions that mould to your shape. Weighing just 198g with balanced pressure distribution, Mziqee Buds go the distance — work, gym, commute, sleep."
+            align="right"
+            animation="slide-right"
+            accent="#FF2D78"
+          />
+
+          {/* 06 · Stats */}
+          <StatsBar />
+
+          {/* 07 · Value — clip reveal */}
+          <FeatureSection
+            label="003 / Value"
+            heading={"Premium Sound.\nAccessible Price."}
+            body="Industry-leading specs at a fraction of the cost. Mziqee Buds prove you don't need to spend a fortune to experience extraordinary audio. Because great music is for everyone."
+            align="left"
+            animation="clip-reveal"
+            accent="#39FF14"
+          />
+
+          {/* 08 · Second marquee */}
+          <Marquee text="Mziqee Buds ·" speed={20} />
+
+          {/* 09 · Pre-order with color picker */}
+          <PreOrderForm />
+
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+
+        {/* 10 · Footer (outside scroll container — video won't play here) */}
+        <div className="relative z-10">
+          <Footer />
         </div>
+
       </main>
-    </div>
+    </LenisSmoothScroll>
   );
 }
