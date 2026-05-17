@@ -76,7 +76,7 @@ export default function VideoBackground({ containerRef }: VideoBackgroundProps) 
   }, [scrollYProgress]);
 
   return (
-    <div className="fixed inset-0 z-0 pointer-events-none">
+    <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
       <video
         ref={videoRef}
         src="/mziiki.mp4" /* Optimized with -g 1 (every frame is keyframe) for ultra-smooth scrubbing */
@@ -84,7 +84,7 @@ export default function VideoBackground({ containerRef }: VideoBackgroundProps) 
         playsInline
         preload="auto"
         className="w-full h-full object-cover"
-        style={{ filter: 'brightness(0.6) contrast(1.05)' }}
+        style={{ filter: 'brightness(0.6) contrast(1.05)', transform: 'scale(1.04)' }}
       />
       <div
         className="absolute inset-0"

@@ -49,7 +49,7 @@ export default function StatsBar() {
     <section className="relative z-10 py-24 border-y border-white/5">
       <div className="max-w-5xl mx-auto px-6 grid grid-cols-2 sm:grid-cols-4 gap-12">
         <Stat value="40" unit="h" label="Battery Life" />
-        <Stat value="30" unit="mm" label="Driver Size" />
+        <Stat value="11" unit="mm" label="Driver Size" />
         <Stat value="99" unit="%" label="Noise Reduction" />
         <Stat value="4.9" label="User Rating" />
       </div>

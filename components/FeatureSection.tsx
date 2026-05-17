@@ -70,7 +70,7 @@ export default function FeatureSection({
           : 'sm:justify-end sm:pr-[5vw] sm:pl-[52vw]'
       )}
     >
-      <div className="max-w-[42vw] w-full" style={{ textShadow: '0 2px 30px rgba(0,0,0,0.9)' }}>
+      <div className="w-full max-w-full sm:max-w-[42vw]" style={{ textShadow: '0 2px 30px rgba(0,0,0,0.9)' }}>
         {/* Label */}
         <motion.span
           initial={v.hidden}
@@ -87,7 +87,7 @@ export default function FeatureSection({
           initial={v.hidden}
           animate={isInView ? v.visible : v.hidden}
           transition={{ ...transition, delay: 0.12 }}
-          className="font-display text-[clamp(2.5rem,5vw,5rem)] font-bold leading-[1.0] text-white mb-6"
+          className="font-display text-[clamp(2.3rem,5vw,5rem)] font-bold leading-[1.0] text-white mb-6"
           style={{ textShadow: '0 4px 40px rgba(0,0,0,1), 0 0 80px rgba(0,0,0,0.8)' }}
         >
           {heading.split('\n').map((line, i) => (
@@ -100,7 +100,7 @@ export default function FeatureSection({
           initial={v.hidden}
           animate={isInView ? v.visible : v.hidden}
           transition={{ ...transition, delay: 0.24 }}
-          className="font-body text-[1.1rem] text-white/75 leading-relaxed"
+          className="font-body text-[1.0rem] sm:text-[1.1rem] text-[#888] leading-relaxed"
           style={{ textShadow: '0 2px 20px rgba(0,0,0,1)' }}
         >
           {body}

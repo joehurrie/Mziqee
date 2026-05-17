@@ -15,8 +15,8 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
-  title: "Mziqee Buds | Feel the Rhythm in Every Beat",
-  description: "Experience premium sound, comfort, and value with Mziqee Buds.",
+  title: "Mziqee Airbuds Pro | Feel the Rhythm in Every Beat",
+  description: "Experience premium sound, comfort, and value with Mziqee Airbuds Pro.",
 };
 
 export default function RootLayout({

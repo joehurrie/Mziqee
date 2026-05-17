@@ -25,12 +25,22 @@ export default function Home() {
 
           {/* 01 · Hero */}
           <Hero />
-          
-          {/* 03 · Sound Quality — slide left */}
+
+          {/* 03 · Sound Quality — slide right (alternating alignment) */}
           <FeatureSection
             label="001 / Sound"
-            heading={"Pure Sound.\nEvery Frequency."}
-            body="40mm titanium drivers engineered for audiophile-grade clarity. From bone-shaking bass to crystalline highs — Mziqee Buds render music the way artists intended it."
+            heading={"Experience Music\nAt Its Best."}
+            body="Powered by our custom-engineered 11mm titanium-coated dynamic drivers, delivering audiophile-grade detail. Experience bone-shaking bass and crystalline highs exactly the way the artist recorded them."
+            align="right"
+            animation="slide-right"
+            accent="#39FF14"
+          />
+
+          {/* 03b · Smart Experience (New Section) — slide left */}
+          <FeatureSection
+            label="002 / Experience"
+            heading={"Smart Noise Isolation.\nCrystal-Clear Calls."}
+            body="Adaptive Active Noise Cancellation isolates you from the chaos, while three beamforming microphones and an intelligent wind-noise reduction grille keep your voice crisp and unfiltered in any environment."
             align="left"
             animation="slide-left"
             accent="#39FF14"
@@ -41,12 +51,12 @@ export default function Home() {
 
           {/* 05 · Comfort — slide right */}
           <FeatureSection
-            label="002 / Comfort"
-            heading={"Wear All Day.\nForget They're There."}
-            body="Memory-foam ear cushions that mould to your shape. Weighing just 198g with balanced pressure distribution, Mziqee Buds go the distance — work, gym, commute, sleep."
+            label="003 / Comfort"
+            heading={"Designed for Comfort."}
+            body="Ergonomically sculpted to lock gently into your ear. With an ultra-lightweight 5.2g profile and pressure-relieving acoustic vents, they offer an effortless, secure fit for work, gym, or all-day listening."
             align="right"
             animation="slide-right"
-            accent="#FF2D78"
+            accent="#39FF14"
           />
 
           {/* 06 · Stats */}
@@ -54,9 +64,9 @@ export default function Home() {
 
           {/* 07 · Value — clip reveal */}
           <FeatureSection
-            label="003 / Value"
-            heading={"Premium Sound.\nAccessible Price."}
-            body="Industry-leading specs at a fraction of the cost. Mziqee Buds prove you don't need to spend a fortune to experience extraordinary audio. Because great music is for everyone."
+            label="004 / Value"
+            heading={"Premium Sound\nEngineered."}
+            body="By utilizing a direct-to-consumer design and proprietary Mziqee audio intelligence chips, we deliver state-of-the-art specs and incredible acoustic performance without the inflated premium markup."
             align="left"
             animation="clip-reveal"
             accent="#39FF14"

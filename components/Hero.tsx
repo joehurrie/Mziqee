@@ -53,7 +53,7 @@ export default function Hero() {
         className="absolute top-0 left-0 right-0 flex items-center justify-between px-[6vw] py-8"
       >
         <span className="font-display font-bold text-white text-xl tracking-tight">
-          Airbads<span className="text-[#39FF14]">.</span>
+          Mziqee<span className="text-[#39FF14]">.</span>
         </span>
         <motion.a
           href="#preorder"
@@ -69,7 +69,7 @@ export default function Hero() {
       {/* Hero heading — word split */}
       <div className="relative z-10 mt-8">
         <p className="font-body text-[0.7rem] uppercase tracking-[0.22em] text-[#39FF14] mb-6">
-          000 / Airbads Pro
+          000 / Mziqee Airbuds Pro
         </p>
 
         {[line1Words, line2Words, line3Words].map((line, lineIndex) => (
