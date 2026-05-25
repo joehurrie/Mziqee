@@ -16,6 +16,8 @@ export default function LenisSmoothScroll({ children }: LenisSmoothScrollProps) 
       smoothWheel: true,
       wheelMultiplier: 1.0,
       touchMultiplier: 1.5,
+      syncTouch: true,
+      syncTouchLerp: 0.08,
     });
 
     function raf(time: number) {

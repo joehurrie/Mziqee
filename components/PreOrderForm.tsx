@@ -41,11 +41,42 @@ export default function PreOrderForm() {
   const [submitted, setSubmitted] = useState(false);
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !name) return;
-    setSubmitted(true);
+    setLoading(true);
+    setErrorMessage('');
+
+    try {
+      const response = await fetch('/api/preorder', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: name,
+          email: email,
+          color: selectedColor.name,
+          _subject: `New Pre-Order Reservation: ${name} (${selectedColor.name})`,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (response.ok && result.success) {
+        setSubmitted(true);
+      } else {
+        setErrorMessage(result.error || 'Something went wrong. Please try again.');
+      }
+    } catch (err) {
+      console.error('Form submission error:', err);
+      setErrorMessage('Submission failed. Check your connection and try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const containerVariants = {
@@ -203,18 +234,29 @@ export default function PreOrderForm() {
               </div>
             </div>
 
+            {errorMessage && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="p-4 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-xs uppercase tracking-wider font-semibold"
+              >
+                {errorMessage}
+              </motion.div>
+            )}
+
             <motion.button
               id="preorder-submit"
               type="submit"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className="mt-2 w-full sm:w-auto sm:px-16 py-5 rounded-full font-display font-bold text-black uppercase tracking-[0.1em] text-sm cursor-pointer transition-shadow duration-200"
+              disabled={loading}
+              whileHover={loading ? {} : { scale: 1.02 }}
+              whileTap={loading ? {} : { scale: 0.98 }}
+              className="mt-2 w-full sm:w-auto sm:px-16 py-5 rounded-full font-display font-bold text-black uppercase tracking-[0.1em] text-sm cursor-pointer transition-shadow duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
               style={{
                 backgroundColor: '#39FF14',
-                boxShadow: '0 0 30px #39FF1460',
+                boxShadow: loading ? 'none' : '0 0 30px #39FF1460',
               }}
             >
-              Reserve My Pair
+              {loading ? 'Reserving...' : 'Reserve My Pair'}
             </motion.button>
 
             <p className="text-xs text-[#555] mt-2">No payment required now. We&apos;ll reach out before shipping.</p>

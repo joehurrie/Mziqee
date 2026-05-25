@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useScroll } from 'motion/react';
 
 interface VideoBackgroundProps {
@@ -9,6 +9,7 @@ interface VideoBackgroundProps {
 
 export default function VideoBackground({ containerRef }: VideoBackgroundProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [videoSrc, setVideoSrc] = useState('/mziiki.mp4');
   const targetTimeRef = useRef(0);
   const currentTimeRef = useRef(0);
   const rafRef = useRef<number | null>(null);
@@ -18,13 +19,55 @@ export default function VideoBackground({ containerRef }: VideoBackgroundProps) 
     offset: ['start start', 'end end'],
   });
 
+  // The video source — set NEXT_PUBLIC_VIDEO_URL in .env.local to point at a CDN
+  // for fast byte-range seeking on mobile (e.g. Cloudinary, Vercel Blob, S3+CloudFront).
+  // Falls back to the local /mziiki.mp4 file.
+  const VIDEO_SRC = process.env.NEXT_PUBLIC_VIDEO_URL || '/mziiki.mp4';
+
+  // Blob-preload for local files so scrubbing seeks into memory instead of disk.
+  // For remote CDN URLs, skip blob wrapping — the server handles range requests natively.
+  useEffect(() => {
+    // Only blob-cache local assets; CDN URLs have native range-request support.
+    if (VIDEO_SRC.startsWith('http')) {
+      setVideoSrc(VIDEO_SRC);
+      return;
+    }
+
+    let objectUrl = '';
+    fetch(VIDEO_SRC)
+      .then((res) => {
+        if (!res.ok) throw new Error('Failed to fetch video');
+        return res.blob();
+      })
+      .then((blob) => {
+        objectUrl = URL.createObjectURL(blob);
+        setVideoSrc(objectUrl);
+      })
+      .catch((err) => {
+        console.error('Error preloading video blob:', err);
+        // Fall back to direct src on error
+        setVideoSrc(VIDEO_SRC);
+      });
+
+    return () => {
+      if (objectUrl) URL.revokeObjectURL(objectUrl);
+    };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Force video reload when source swaps
+  useEffect(() => {
+    const video = videoRef.current;
+    if (video) {
+      video.load();
+    }
+  }, [videoSrc]);
+
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
 
-    // Pause and preload so we can seek freely
     video.pause();
-    video.load();
 
     const updateTargetTime = (progress: number) => {
       if (video.duration) {
@@ -37,7 +80,15 @@ export default function VideoBackground({ containerRef }: VideoBackgroundProps) 
     const unsubscribe = scrollYProgress.on('change', updateTargetTime);
 
     const handleLoadedMetadata = () => {
-      updateTargetTime(scrollYProgress.get());
+      if (video.duration) {
+        const safeDuration = video.duration - 0.05;
+        const progress = scrollYProgress.get();
+        targetTimeRef.current = progress * safeDuration;
+        
+        // Match currentTimeRef to prevent snap transitions
+        currentTimeRef.current = targetTimeRef.current;
+        video.currentTime = currentTimeRef.current;
+      }
     };
 
     if (video.readyState >= 1 && video.duration) {
@@ -59,13 +110,16 @@ export default function VideoBackground({ containerRef }: VideoBackgroundProps) 
 
         if (Math.abs(delta) > 0.001) {
           currentTimeRef.current = lerp(currentTimeRef.current, targetTimeRef.current, LERP_FACTOR);
-          video.currentTime = currentTimeRef.current;
+          
+          // Guard with seeking state to prevent overloading browser decoder queue
+          if (!video.seeking) {
+            video.currentTime = currentTimeRef.current;
+          }
         }
       }
       rafRef.current = requestAnimationFrame(tick);
     }
 
-    // Start the render loop
     rafRef.current = requestAnimationFrame(tick);
 
     return () => {
@@ -79,7 +133,7 @@ export default function VideoBackground({ containerRef }: VideoBackgroundProps) 
     <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
       <video
         ref={videoRef}
-        src="/mziiki.mp4" /* Optimized with -g 1 (every frame is keyframe) for ultra-smooth scrubbing */
+        src={videoSrc}
         muted
         playsInline
         preload="auto"

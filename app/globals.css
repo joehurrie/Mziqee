@@ -55,12 +55,9 @@ html.lenis, html.lenis body {
   pointer-events: none;
 }
 
-/* Prevent default blue focus outlines on layout containers and scrollable wrappers */
-html, body, main, div, section, button, a {
+/* Prevent default browser focus outlines and tap highlight color */
+*, *:focus, *:active {
   -webkit-tap-highlight-color: transparent;
-}
-
-*:focus:not(:focus-visible) {
   outline: none !important;
   box-shadow: none !important;
 }
@@ -68,6 +65,7 @@ html, body, main, div, section, button, a {
 *:focus-visible {
   outline: 2px solid var(--neon-green) !important;
   outline-offset: 2px;
+  box-shadow: none !important;
 }
 
 @keyframes shine {
